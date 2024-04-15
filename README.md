@@ -93,7 +93,7 @@ bash
 
     npm start
 ```
-    This will launch the front end on localhost:3000 and connect it to the backend automatically.
+This will launch the front end on localhost:3000 and connect it to the backend automatically.
 
 ### Usage
 
@@ -102,22 +102,22 @@ Contributing
 
 Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
 
-    Fork the Project
-    Create your Feature Branch (git checkout -b feature/AmazingFeature)
-    Commit your Changes (git commit -m 'Add some AmazingFeature')
-    Push to the Branch (git push origin feature/AmazingFeature)
-    Open a Pull Request
+### Fork the Project
+1. Create your Feature Branch (git checkout -b feature/AmazingFeature)
+1. Commit your Changes (git commit -m 'Add some AmazingFeature')
+1. Push to the Branch (git push origin feature/AmazingFeature)
+1. Open a Pull Request
 
 ### License
 
 Distributed under the MIT License. See LICENSE for more information.
-Contact
 
-Your Name - @your_twitter - email@example.com
+### Contact
 
-Project Link: https://github.com/yourusername/chatgpt-clone
+Mark Mahowald- markmahowald0328@gmail.com
+
 
 ### Acknowledgments
-    [OpenAI](https://openai.com/)
-    [ASP.NET Core](https://dotnet.microsoft.com/en-us/apps/aspnet)
-    [Blazor](https://dotnet.microsoft.com/en-us/apps/aspnet/web-apps/blazor)
+[OpenAI](https://openai.com/)
+[ASP.NET Core](https://dotnet.microsoft.com/en-us/apps/aspnet)
+[Blazor](https://dotnet.microsoft.com/en-us/apps/aspnet/web-apps/blazor)
