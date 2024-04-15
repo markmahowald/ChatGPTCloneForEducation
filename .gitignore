@@ -1,0 +1,63 @@
+# Visual Studio / Rider / dotnet CLI
+*.sln
+*.ide
+/.vs/
+/bin/
+/obj/
+/.idea/
+*.userprefs
+*.log
+*.resharper
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+build/
+[Bb]in/
+[Oo]bj/
+
+# NuGet packages
+*.nuget.cache
+*.dll
+*.pdb
+*.cache
+packages/
+!.nuget/
+*.nupkg
+*.snupkg
+
+# MSTest test Results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+*.testsettings
+
+# BenchmarkDotNet Artifacts
+BenchmarkDotNet.Artifacts/
+artifacts/
+
+# NCrunch
+*.ncrunch*
+.*crunch*.local.xml
+nCrunchTemp_*
+
+# StyleCop
+StyleCopReport.xml
+
+# Windows Temp Directory
+Windows\ Temp/
+
+# Resharper Cache Directory
+*_ReSharper*/
+
+# CodeRush
+_CR_Documentation/
+_CR_Sync/
+DXCore/Generated
+
+# DocFX output folder
+/_site/
+
+# Secret configurations
+appsettings.Secrets.json
+/DotNetImplementation/.vs
