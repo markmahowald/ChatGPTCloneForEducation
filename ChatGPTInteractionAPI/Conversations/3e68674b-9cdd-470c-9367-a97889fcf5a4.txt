@@ -1,9 +1,0 @@
-{
-  "Messages": [
-    {
-      "Role": "user",
-      "Content": "test ping"
-    }
-  ],
-  "Id": "3e68674b-9cdd-470c-9367-a97889fcf5a4"
-}

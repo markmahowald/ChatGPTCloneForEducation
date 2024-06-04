@@ -47,9 +47,6 @@ namespace ChatGPTInteractionAPI.Services
             string json = await File.ReadAllTextAsync(filePath);
             Conversation conversation = JsonConvert.DeserializeObject<Conversation>(json);
 
-            // Add user message to the conversation
-            conversation.AddMessage("user", userInput);
-
             // Get the response from OpenAI
             await SendMessageToOpenAI(userInput, conversation);
 
@@ -124,23 +121,33 @@ namespace ChatGPTInteractionAPI.Services
             // Get the directory path for "Conversations" folder in the current directory
             string folderPath = Path.Combine(Directory.GetCurrentDirectory(), "Conversations");
 
-            // Check if the "Conversations" directory exists, if not, create it
-            if (!Directory.Exists(folderPath))
+            try
             {
-                Directory.CreateDirectory(folderPath);
+                // Check if the "Conversations" directory exists, if not, create it
+                if (!Directory.Exists(folderPath))
+                {
+                    Directory.CreateDirectory(folderPath);
+                }
+
+
+                // Use the GUID as the filename
+                string fileName = $"{conversation.Id}.txt";
+                string filePath = Path.Combine(folderPath, fileName);
+
+
+                // Serialize the conversation object to JSON
+                string json = JsonConvert.SerializeObject(conversation, Formatting.Indented);
+
+                // Write the JSON to a text file in the "Conversations" directory
+                await File.WriteAllTextAsync(filePath, json);
             }
+            catch (Exception ex)
+            {
+                //todo: this would be a good place for logging. 
 
-            // Create a unique file name based on the current timestamp
-            // Use the GUID as the filename
-            string fileName = $"{conversation.Id}.txt";
-            string filePath = Path.Combine(folderPath, fileName);
+                Console.WriteLine($"Error saving conversation: {ex.Message}");
 
-
-            // Serialize the conversation object to JSON
-            string json = JsonConvert.SerializeObject(conversation, Formatting.Indented);
-
-            // Write the JSON to a text file in the "Conversations" directory
-            await File.WriteAllTextAsync(filePath, json);
+            }
         }
 
         public class OpenAIResponse

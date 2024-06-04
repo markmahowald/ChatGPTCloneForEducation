@@ -1,9 +1,0 @@
-{
-  "Messages": [
-    {
-      "Role": "user",
-      "Content": "test time!"
-    }
-  ],
-  "Id": "536abe01-e475-46d2-ba9e-de5935c6eb57"
-}
