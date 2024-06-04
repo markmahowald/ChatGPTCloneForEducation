@@ -4,6 +4,9 @@ using System.Net.Http.Headers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ChatGPTInteractionAPI.Classes;
+using System.Collections;
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
+
 
 namespace ChatGPTInteractionAPI.Services
 {
@@ -12,13 +15,18 @@ namespace ChatGPTInteractionAPI.Services
         private  HttpClient _httpClient;
         private  string _openAiApiKey;
 
-        public Conversation StartConversation(string initialMessage)
+        public ChatService()
+        {
+                _httpClient = new HttpClient();
+
+        }
+
+        public async Task<Conversation> StartConversation(string initialMessage)
         {
             Conversation conversation = new Conversation();
             conversation.Id = Guid.NewGuid();
-            conversation.AddMessage("user", initialMessage);
-            SendMessageToOpenAI(initialMessage, conversation);
-            SaveConversationToFile(conversation);
+            await SendMessageToOpenAI(initialMessage, conversation);
+            await SaveConversationToFile(conversation);
             return conversation;
 
         }
@@ -54,39 +62,61 @@ namespace ChatGPTInteractionAPI.Services
 
         public async Task<string> SendMessageToOpenAI(string prompt, Conversation conversation)
         {
+            //verify that we have the api key. 
+
+            //var variables = Environment.GetEnvironmentVariables();
+            //foreach (DictionaryEntry env in Environment.GetEnvironmentVariables())
+            //{
+            //    Console.WriteLine("Key: {0}, Value: {1}", env.Key, env.Value);
+            //}
             if (this._openAiApiKey == null)
             {
                 this._openAiApiKey = Environment.GetEnvironmentVariable("OpenAiPersonalKey");
 
             }
 
-            var data = new
+            //make sure that the http client has the api key
+            //this._httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _openAiApiKey);
+            var requestBody = new
             {
-                model = "text-davinci-002",
-                prompt = prompt,
-                max_tokens = 150
+                model = "gpt-4",
+                max_tokens = 150,
+                messages = new[]
+            {
+                //new { role = "system", content = "You are a helpful assistant." },
+                new { role = "user", content = prompt }
+            },
             };
 
-            string jsonData = JsonConvert.SerializeObject(data);
-            StringContent content = new StringContent(jsonData, System.Text.Encoding.UTF8, "application/json");
+            string generatedText = "";
+            this._httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {this._openAiApiKey}");
 
-            HttpResponseMessage response = await _httpClient.PostAsync("https://api.openai.com/v1/completions", content);
-            string responseBody = await response.Content.ReadAsStringAsync();
+            HttpResponseMessage response = await this._httpClient.PostAsJsonAsync("https://api.openai.com/v1/chat/completions", requestBody);
+
 
             if (response.IsSuccessStatusCode)
             {
-                JObject jObject = JObject.Parse(responseBody);
-                string responseText = jObject["choices"][0]["text"].ToString();
-                conversation.AddMessage("user", prompt);  // Save user message
-                conversation.AddMessage("ai", responseText);  // Save AI response
-                return responseText;
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var jsonDocument = JsonDocument.Parse(responseContent);
+                var choices = jsonDocument.RootElement.GetProperty("choices");
+                
+                generatedText += choices[0].GetProperty("message").GetProperty("content").GetString();
             }
             else
             {
-                // Handle errors
-                return $"Error: {response.ReasonPhrase}";
+                generatedText += $"Error(s): {await response.Content.ReadAsStringAsync()}";
             }
-        }
+                           
+            conversation.AddMessage("user", prompt);  // Save user message
+            conversation.AddMessage("assistant", generatedText);  // Save AI response
+            return generatedText;
+               
+            // Handle errors
+            //conversation.AddMessage("system", "");  // Save user message
+            //return $"Error: {response.ReasonPhrase}";
+                
+            }
+     
 
 
         public async Task SaveConversationToFile(Conversation conversation)

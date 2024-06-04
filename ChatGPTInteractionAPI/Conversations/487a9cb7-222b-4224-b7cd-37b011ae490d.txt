@@ -1,0 +1,13 @@
+{
+  "Messages": [
+    {
+      "Role": "user",
+      "Content": "string"
+    },
+    {
+      "Role": "assistant",
+      "Content": "In computing, a string is a sequence of characters. It can include letters, numbers, and special characters, and is typically used to store and manipulate text within a program. Strings are a basic data type in many programming languages, and can be manipulated using various string functions and methods. It is usually enclosed in quotations (\" \") or single quotations (' ')."
+    }
+  ],
+  "Id": "487a9cb7-222b-4224-b7cd-37b011ae490d"
+}

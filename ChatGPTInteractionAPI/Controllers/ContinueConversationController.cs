@@ -2,33 +2,46 @@
 using ChatGPTInteractionAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using ChatGPTInteractionAPI.Classes.ControllerSupportingClasses;
 
 namespace ChatGPTInteractionAPI.Controllers
 {
-    [Route("api/sessions/{sessionId}")]
+    [Route("api/continue_session")]
     [ApiController]
     public class ContinueConversationController : Controller
     {
-        private readonly IChatService _chatService;
+        private readonly ChatService _chatService;
 
-        public ContinueConversationController(IChatService chatService)
+        public ContinueConversationController(ChatService chatService)
         {
             _chatService = chatService;
         }
 
-       // [HttpPost(Name= "ContinueConversation")]
         [HttpPost]
-        public async Task<IActionResult> SendMessage(string sessionId, [FromBody] MessageRequest request)
+        public async Task<IActionResult> ContinueConversation([FromBody] ContinueConversationRequest request)
         {
             try
             {
-                var response = await _chatService.ContinueConversation(sessionId, request.Message);
-                return Ok(new { Response = response });
+                if (request == null || request.ConversationId == Guid.Empty || string.IsNullOrWhiteSpace(request.Message))
+                {
+                    return BadRequest("Valid conversation ID and message are required.");
+                }
+
+                // Assuming ContinueConversation method returns a Conversation object
+                Conversation conversation = await _chatService.ContinueConversation(request.ConversationId, request.Message);
+
+                if (conversation == null)
+                {
+                    return NotFound($"No conversation found with ID: {request.ConversationId}");
+                }
+
+                // Return the updated conversation details
+                return Ok(new { ConversationId = conversation.Id, Messages = conversation.Messages });
             }
             catch (Exception ex)
             {
                 // Log the exception details here
-                return StatusCode(500, "An error occurred while processing your request.");
+                return StatusCode(500, "An error occurred while processing your request: " + ex.Message);
             }
         }
     }

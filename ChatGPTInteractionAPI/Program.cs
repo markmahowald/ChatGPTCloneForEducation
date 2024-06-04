@@ -38,7 +38,7 @@ namespace ChatGPTInteractionAPI
         public static void ConfigureServices(IServiceCollection services)
         {
             services.AddHttpClient();
-            services.AddScoped<IChatService, ChatService>();
+            services.AddScoped< ChatService>();
             services.AddControllers();
         }
 
