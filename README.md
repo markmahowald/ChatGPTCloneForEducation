@@ -2,6 +2,16 @@
 
 This project aims to replicate the functionality of OpenAI's ChatGPT using a Blazor front end and an ASP.NET Core backend. The application will allow users to interact with a conversational AI model through a clean and intuitive interface.
 
+## Project Status
+
+We're mid-development, but the API layer is now fully operational and ready for community testing! It includes three endpoints:
+- **Start Conversation**: Initiates a new chat session.
+- **Continue Conversation**: Allows continued interaction within an existing session.
+- **Get All Conversations**: Retrieves a list of all ongoing and past conversations.
+
+Feel free to test these functionalities and provide feedback!  I will be adding more comments and cleaning up commented code at a later date.  
+
+
 ## Requirements
 
 - **Tier 0 (MVP)**: Basic chat functionality using OpenAI's API to start and maintain conversations.
@@ -121,3 +131,5 @@ Mark Mahowald- markmahowald0328@gmail.com
 [OpenAI](https://openai.com/)
 [ASP.NET Core](https://dotnet.microsoft.com/en-us/apps/aspnet)
 [Blazor](https://dotnet.microsoft.com/en-us/apps/aspnet/web-apps/blazor)
+Special thanks to the OpenAI Assistant(through chat GPT and the open ai API directly), which provided valuable input during the design and troubleshooting phases of the API layer.
+
