@@ -1,0 +1,15 @@
+{
+  "Messages": [
+    {
+      "Role": "user",
+      "Content": "ask me a question to make a joke"
+    },
+    {
+      "Role": "assistant",
+      "Content": "Error(s): {\n  \"error\": {\n    \"message\": \"Invalid type for 'messages': expected an array of objects, but got a string instead.\",\n    \"type\": \"invalid_request_error\",\n    \"param\": \"messages\",\n    \"code\": \"invalid_type\"\n  }\n}"
+    }
+  ],
+  "Id": "b42f4d71-0394-450d-85a0-be7388d2dc62",
+  "Model": "gpt-4",
+  "MaxTokens": 150
+}

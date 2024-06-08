@@ -1,0 +1,15 @@
+{
+  "Messages": [
+    {
+      "Role": "user",
+      "Content": "string"
+    },
+    {
+      "Role": "assistant",
+      "Content": "Error(s): {\n  \"error\": {\n    \"message\": \"Invalid type for 'messages[0]': expected an object, but got a string instead.\",\n    \"type\": \"invalid_request_error\",\n    \"param\": \"messages[0]\",\n    \"code\": \"invalid_type\"\n  }\n}"
+    }
+  ],
+  "Id": "d41c24be-d51e-4980-b6b8-adf18460b707",
+  "Model": "gpt-4",
+  "MaxTokens": 150
+}
