@@ -1,6 +1,10 @@
-﻿using System.Reflection.Metadata.Ecma335;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace ChatGPTInteractionAPI.Classes
+namespace SharedClassesAndUtility
 {
     public class Conversation
     {
@@ -26,3 +30,4 @@ namespace ChatGPTInteractionAPI.Classes
         }
     }
 }
+

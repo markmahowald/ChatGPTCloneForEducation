@@ -1,5 +1,4 @@
-﻿using ChatGPTInteractionAPI.Classes;
-
+﻿
 namespace ChatGPTInteractionAPI.Services
 {
     public interface IChatService

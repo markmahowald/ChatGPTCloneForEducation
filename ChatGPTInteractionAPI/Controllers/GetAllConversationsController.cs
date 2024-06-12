@@ -1,8 +1,6 @@
-﻿using ChatGPTInteractionAPI.Classes;
-using ChatGPTInteractionAPI.Services;
+﻿using ChatGPTInteractionAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using ChatGPTInteractionAPI.Classes.ControllerSupportingClasses;
 
 namespace ChatGPTInteractionAPI.Controllers
 {

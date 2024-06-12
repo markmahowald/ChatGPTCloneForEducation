@@ -3,11 +3,11 @@ using System.Text;
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using ChatGPTInteractionAPI.Classes;
 using System.Collections;
 using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Microsoft.AspNetCore.Identity;
 using System.Data;
+using SharedClassesAndUtility;
 
 
 namespace ChatGPTInteractionAPI.Services

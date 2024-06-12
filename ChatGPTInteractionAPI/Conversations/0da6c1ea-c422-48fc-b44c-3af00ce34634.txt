@@ -1,0 +1,15 @@
+{
+  "Messages": [
+    {
+      "Role": "user",
+      "Content": "string"
+    },
+    {
+      "Role": "assistant",
+      "Content": "In computer programming, a string is a sequence of characters. It is one of the basic data types and is used for storing text. Strings can include letters, numbers, punctuation, and even escape sequences like newline (\\n) or tab (\\t). They can be manipulated in numerous ways in programming, such as being combined, split apart, or searched for specific text."
+    }
+  ],
+  "Id": "0da6c1ea-c422-48fc-b44c-3af00ce34634",
+  "Model": "gpt-4",
+  "MaxTokens": 150
+}
