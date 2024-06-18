@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <Folder Include="Classes\" />
+    <Folder Include="Conversations\" />
   </ItemGroup>
 
   <ItemGroup>
