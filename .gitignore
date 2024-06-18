@@ -61,3 +61,4 @@ DXCore/Generated
 # Secret configurations
 appsettings.Secrets.json
 /DotNetImplementation/.vs
+/ChatGPTInteractionAPI/Conversations
