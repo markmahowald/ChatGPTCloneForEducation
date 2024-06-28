@@ -25,7 +25,7 @@ namespace SharedClassesAndUtility
                 MaxTokens = this.MaxTokens
 
             };
-            result.Messages = this.Messages.ToList();
+            result.Conversation = this;
             return result;
         }
     }

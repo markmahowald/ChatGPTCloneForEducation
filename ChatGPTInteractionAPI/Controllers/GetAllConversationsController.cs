@@ -18,8 +18,8 @@ namespace ChatGPTInteractionAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllConversations()
         {
-            var conversations = await _chatService.GetAllConversationsAsync();
+            List<SharedClassesAndUtility.OpenAiApiBody> conversations = await _chatService.GetAllConversationsAsync();
             return Ok(conversations);
-        }
+            }
     }
 }

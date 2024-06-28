@@ -6,6 +6,7 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SharedClassesAndUtility;
 
 namespace ChatGPTForPersonalEducation_WPF.Services
@@ -35,15 +36,21 @@ namespace ChatGPTForPersonalEducation_WPF.Services
             try
             {
                 // Send a POST request to the specified URI with the specified content.
-                var response = await _httpClient.PostAsync("https://localhost:7171/api/new_session", content);
+                HttpResponseMessage response = await _httpClient.PostAsync("https://localhost:7171/api/new_session", content);
 
                 // Ensure the request was successful
                 response.EnsureSuccessStatusCode();
 
                 // Optionally read the response body (if any)
                 string responseBody = await response.Content.ReadAsStringAsync();
+                Conversation? result = JsonConvert.DeserializeObject<Conversation>(responseBody);
 
-                return JsonConvert.DeserializeObject<Conversation>(responseBody);
+                //MM 6/28/2024 - we have been running into an odd issue with json deserializing the guid, so i am just manually getting it from the json string. 
+
+                var jObject = JObject.Parse(responseBody);
+                Guid guid = new Guid(jObject["conversationId"]?.ToString());
+                result.Id = guid;
+                return result;
 
             }
             catch (Exception)
@@ -57,11 +64,8 @@ namespace ChatGPTForPersonalEducation_WPF.Services
 
         public async Task<Conversation> ContinueSessionAsync(Guid sessionId, string userInput)
         {
-            var requestBody = new
-            {
-                sessionId,
-                userInput
-            };
+            ContinueConversationRequest requestBody = new ContinueConversationRequest() { ConversationId = sessionId.ToString(), Message = userInput };
+            
 
             var content = new StringContent(JsonConvert.SerializeObject(requestBody), Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync("https://localhost:7171/api/continue_session", content);
@@ -75,7 +79,9 @@ namespace ChatGPTForPersonalEducation_WPF.Services
             var response = await _httpClient.GetAsync("https://localhost:7171/api/retrieve_all_sessions");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<List<Conversation>>(content);
+            List<OpenAiApiBody>? boddies = JsonConvert.DeserializeObject<List<OpenAiApiBody>>(content);
+            List<Conversation> conversations = boddies.Select(x=> x.Conversation).ToList();
+            return conversations;
         }
     }
 }

@@ -1,0 +1,76 @@
+﻿<Window x:Class="ChatGPTForPersonalEducation_WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ChatGPTForPersonalEducation_WPF"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800"
+        Loaded="Window_Loaded"
+         xmlns:conv="clr-namespace:ChatGPTForPersonalEducation_WPF.Converters"
+        Closed="Window_Closed"
+       >
+    <Window.Resources>
+        <conv:SenderToColorConverter x:Key="SenderToColorConverter"/>
+        <conv:SenderToAlignmentConverter x:Key="SenderToAlignmentConverter"/>
+    </Window.Resources>
+    <Grid>
+        <!-- Split the window into two columns -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- StackPanel for Existing Conversations -->
+        <StackPanel Grid.Column="0" Background="#DDD"
+                    >
+            <ListBox
+                x:Name="MessagesListBox"
+                ItemsSource="{Binding conversations}">
+                <ListBox.ItemTemplate >
+                    <!-- Template for each conversation item -->
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Id}" Padding="10" Margin="5"/>
+                        </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+                
+        </StackPanel>
+
+        <!-- Conversation Window -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- ScrollViewer for Conversation History -->
+            <ScrollViewer Grid.Row="0" Margin="5">
+                <ItemsControl x:Name="SelectedConversationMessagesItemsControl">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Background="{Binding Sender, Converter={StaticResource SenderToColorConverter}}" Margin="5">
+                                <TextBlock Text="{Binding Time, StringFormat='HH:mm:ss'}" FontSize="10" Margin="5"/>
+                                <TextBlock Text="{Binding Content}" Margin="5" TextAlignment="{Binding Sender, Converter={StaticResource SenderToAlignmentConverter}}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+
+            <Grid Grid.Row="1" Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBox x:Name="UserInputTextBox" 
+                         Grid.Column="0" 
+                         AcceptsReturn="True" 
+                         TextWrapping="Wrap" 
+                         VerticalScrollBarVisibility="Auto" 
+                         VerticalAlignment="Stretch"/>
+                <Button Grid.Column="1" Content="Send" Command="{Binding SendCommand}" Click="SendInput_Click" VerticalAlignment="Stretch"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

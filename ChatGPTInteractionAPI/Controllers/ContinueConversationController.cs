@@ -21,13 +21,13 @@ namespace ChatGPTInteractionAPI.Controllers
         {
             try
             {
-                if (request == null || request.ConversationId == Guid.Empty || string.IsNullOrWhiteSpace(request.Message))
+                if (request == null || request.ConversationId == "" || string.IsNullOrWhiteSpace(request.Message))
                 {
                     return BadRequest("Valid conversation ID and message are required.");
                 }
 
                 // Assuming ContinueConversation method returns a Conversation object
-                Conversation conversation = await _chatService.ContinueConversation(request.ConversationId, request.Message);
+                Conversation conversation = await _chatService.ContinueConversation(new Guid( request.ConversationId), request.Message);
 
                 if (conversation == null)
                 {

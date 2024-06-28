@@ -8,7 +8,7 @@ namespace SharedClassesAndUtility
 {
     public class ContinueConversationRequest
     {
-        public Guid ConversationId { get; set; }
+        public string ConversationId { get; set; }
         public string Message { get; set; }
     }
 }
