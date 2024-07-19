@@ -73,8 +73,9 @@ namespace ChatGPTForPersonalEducation_WPF
             else
             {
                 this.UserInputTextBox.Clear();
-                this.Title = $"Mark-GPT - Conversation {viewModel.SelectedConversation.Id}";
+                this.Title = $"Mark-GPT - Conversation {viewModel.SelectedConversation.TopicDescription}";
             }
+            this.CurrentConversationScrollViewer.ScrollToBottom();
         }
 
         // Handler for key presses in the input text box to check for Enter key
@@ -116,6 +117,11 @@ namespace ChatGPTForPersonalEducation_WPF
         private void Window_Closed(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void ExistingConversation_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
         }
     }
 }

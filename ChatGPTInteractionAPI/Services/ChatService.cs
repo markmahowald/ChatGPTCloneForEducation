@@ -28,11 +28,60 @@ namespace ChatGPTInteractionAPI.Services
             Conversation conversation = new Conversation();
             conversation.Id = Guid.NewGuid();
             await SendConversationToOpenAI(initialMessage, conversation);
+            await HaveGPTNameTheConversation(conversation);
             await SaveConversationToFile(conversation);
             return conversation;
 
         }
-        
+
+        private async Task HaveGPTNameTheConversation(Conversation conversation)
+        {
+            //verify that we have the api key. 
+
+
+            if (this._openAiApiKey == null)
+            {
+                this._openAiApiKey = Environment.GetEnvironmentVariable("OpenAiPersonalKey");
+
+            }
+
+            //assemble all current messages into a list
+            var existingMessages = conversation.Messages.Select(x => new { role = x.Role, content = x.Content }).ToList();
+            existingMessages.Add(new { role = "system", content = "Please name this conversation based on the initial user prompt" });
+            var messageCollection = existingMessages.ToArray();
+
+            var requestBody = new
+            {
+                model = "gpt-4",
+                max_tokens = 150,
+                messages = messageCollection
+            };
+
+            string generatedText = "";
+
+            HttpResponseMessage response = await this._httpClient.PostAsJsonAsync("https://api.openai.com/v1/chat/completions", requestBody);
+
+
+            if (response.IsSuccessStatusCode)
+            {
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var jsonDocument = JsonDocument.Parse(responseContent);
+                var choices = jsonDocument.RootElement.GetProperty("choices");
+
+                generatedText += choices[0].GetProperty("message").GetProperty("content").GetString();
+            }
+            else
+            {
+                generatedText += $"Error(s): {await response.Content.ReadAsStringAsync()}";
+            }
+
+            conversation.TopicDescription = generatedText ;  // Save AI response
+            
+
+            // TODO: Handle errors
+
+        }
+
         public async Task<Conversation> ContinueConversation(Guid conversationId, string userInput)
         {
             // Define the path to the conversation file
@@ -63,11 +112,7 @@ namespace ChatGPTInteractionAPI.Services
         {
             //verify that we have the api key. 
 
-            //var variables = Environment.GetEnvironmentVariables();
-            //foreach (DictionaryEntry env in Environment.GetEnvironmentVariables())
-            //{
-            //    Console.WriteLine("Key: {0}, Value: {1}", env.Key, env.Value);
-            //}
+           
             if (this._openAiApiKey == null)
             {
                 this._openAiApiKey = Environment.GetEnvironmentVariable("OpenAiPersonalKey");
@@ -76,10 +121,7 @@ namespace ChatGPTInteractionAPI.Services
 
             //assemble all current messages into a list
 
-            //make sure that the http client has the api key
-            //this._httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _openAiApiKey);
             conversation.AddMessage("user", prompt);  // Save user message
-            conversation.Messages.Select(x => $"{x.Role}: {x.Content}");
             var messageCollection = conversation.Messages.Select(x => new { role = x.Role, content = x.Content }).ToArray();
 
 
@@ -112,9 +154,8 @@ namespace ChatGPTInteractionAPI.Services
             conversation.AddMessage("assistant", generatedText);  // Save AI response
             return generatedText;
                
-            // Handle errors
-            //conversation.AddMessage("system", "");  // Save user message
-            //return $"Error: {response.ReasonPhrase}";
+            // TODO: Handle errors
+
                 
             }
      

@@ -9,6 +9,9 @@
         Loaded="Window_Loaded"
          xmlns:conv="clr-namespace:ChatGPTForPersonalEducation_WPF.Converters"
         Closed="Window_Closed"
+        MinHeight="450"
+        MinWidth="800"
+        SizeToContent="WidthAndHeight"
        >
     <Window.Resources>
         <conv:SenderToColorConverter x:Key="SenderToColorConverter"/>
@@ -30,7 +33,12 @@
                 <ListBox.ItemTemplate >
                     <!-- Template for each conversation item -->
                         <DataTemplate>
-                            <TextBlock Text="{Binding Id}" Padding="10" Margin="5"/>
+                        <TextBlock Text="{Binding TopicDescription, Mode=TwoWay}" 
+                                   Padding="10" 
+                                   Margin="5" 
+                                   TextWrapping="Wrap"
+                                   MouseDown="ExistingConversation_MouseDown"
+                                   />
                         </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
@@ -45,13 +53,13 @@
             </Grid.RowDefinitions>
 
             <!-- ScrollViewer for Conversation History -->
-            <ScrollViewer Grid.Row="0" Margin="5">
+            <ScrollViewer Grid.Row="0" Margin="5" x:Name="CurrentConversationScrollViewer">
                 <ItemsControl x:Name="SelectedConversationMessagesItemsControl">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Background="{Binding Sender, Converter={StaticResource SenderToColorConverter}}" Margin="5">
                                 <TextBlock Text="{Binding Time, StringFormat='HH:mm:ss'}" FontSize="10" Margin="5"/>
-                                <TextBlock Text="{Binding Content}" Margin="5" TextAlignment="{Binding Sender, Converter={StaticResource SenderToAlignmentConverter}}"/>
+                                <TextBlock Text="{Binding Content}" Margin="5" TextAlignment="{Binding Sender, Converter={StaticResource SenderToAlignmentConverter}}" TextWrapping="WrapWithOverflow"/>
                             </StackPanel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>

@@ -67,6 +67,7 @@ namespace ChatGPTForPersonalEducation_WPF.ViewModels
                     Conversation selectedConversationWithReply = await this.ChatService.ContinueSessionAsync(this.SelectedConversation.Id, userInput);
                     this.SelectedConversationMessages.Add(selectedConversationWithReply.Messages[selectedConversationWithReply.Messages.Count() - 2]);
                     this.SelectedConversationMessages.Add(selectedConversationWithReply.Messages.Last());
+                    this.Conversations.Add(selectedConversationWithReply);
                 }
 
                 else
@@ -76,14 +77,19 @@ namespace ChatGPTForPersonalEducation_WPF.ViewModels
                     this.SelectedConversation.Id = results.Id;
                     this.SelectedConversation = results;
                     this.SelectedConversationMessages.Clear();
+                    this.Conversations.Add(results);
                     foreach (Message m in results.Messages)
                     {
                         this.SelectedConversationMessages.Add(m);
 
                     }
+
                 }
 
-                //todo: get the response. 
+                foreach (Conversation c in this.Conversations)
+                {
+                    c.TriggerAllPropertyChanged();
+                }
                 return true;
             }
             catch (Exception ex)
