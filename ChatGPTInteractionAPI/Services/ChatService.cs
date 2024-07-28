@@ -217,6 +217,24 @@ namespace ChatGPTInteractionAPI.Services
             return conversations;
         }
 
+        public async Task<Conversation> GetConversationByIdAsync(Guid id)
+        {
+            // Define the path to the conversation file
+            string folderPath = Path.Combine(Directory.GetCurrentDirectory(), "Conversations");
+            string filePath = Path.Combine(folderPath, $"{id}.txt");
+
+            // Check if the conversation file exists
+            if (!File.Exists(filePath))
+            {
+                return null;
+            }
+
+            // Load the conversation from the file
+            string json = await File.ReadAllTextAsync(filePath);
+            Conversation conversation = JsonConvert.DeserializeObject<Conversation>(json);
+
+            return conversation;
+        }
 
         public class OpenAIResponse
         {

@@ -14,7 +14,7 @@ namespace ChatGPTForPersonalEducation_WPF.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var sender = value as string;
-            return sender == "User" ? TextAlignment.Right : TextAlignment.Left;
+            return sender == "user" ? TextAlignment.Right : TextAlignment.Left;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

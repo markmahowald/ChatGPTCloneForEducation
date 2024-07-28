@@ -22,7 +22,7 @@ namespace ChatGPTForPersonalEducation_WPF
     public partial class MainWindow : Window
     {
 
-        private MainWindowViewModel viewModel;
+        private MainWindowViewModel _viewModel;
 
 
 
@@ -33,7 +33,7 @@ namespace ChatGPTForPersonalEducation_WPF
         }
         public MainWindow(IServiceProvider serviceProvider)
         {
-            viewModel = new MainWindowViewModel(serviceProvider);
+            _viewModel = new MainWindowViewModel(serviceProvider);
            
             InitializeComponent();
         }
@@ -43,7 +43,7 @@ namespace ChatGPTForPersonalEducation_WPF
         {
             try
             {
-               viewModel.LoadInitialDataAsync();
+               _viewModel.LoadInitialDataAsync();
                 this.Title = "Mark-GPT";
 
             }
@@ -53,8 +53,8 @@ namespace ChatGPTForPersonalEducation_WPF
                 this.Close();
             }
 
-            this.MessagesListBox.ItemsSource = this.viewModel.Conversations;
-            this.SelectedConversationMessagesItemsControl.ItemsSource = this.viewModel.SelectedConversationMessages;
+            this.MessagesListBox.ItemsSource = this._viewModel.Conversations;
+            this.SelectedConversationMessagesListBox.ItemsSource = this._viewModel.SelectedConversationMessages;
 
         }
 
@@ -64,7 +64,7 @@ namespace ChatGPTForPersonalEducation_WPF
         private async void SendInput_Click(object sender, RoutedEventArgs e)
         {
             var userInput = this.UserInputTextBox.Text.Trim();
-            bool sent = await viewModel.SendMessage(userInput);
+            bool sent = await _viewModel.SendMessage(userInput);
 
             if (!sent)
             {
@@ -73,7 +73,7 @@ namespace ChatGPTForPersonalEducation_WPF
             else
             {
                 this.UserInputTextBox.Clear();
-                this.Title = $"Mark-GPT - Conversation {viewModel.SelectedConversation.TopicDescription}";
+                this.Title = $"Mark-GPT - Conversation {_viewModel.SelectedConversation.TopicDescription}";
             }
             this.CurrentConversationScrollViewer.ScrollToBottom();
         }
@@ -84,7 +84,7 @@ namespace ChatGPTForPersonalEducation_WPF
             if (e.Key == Key.Enter && Keyboard.Modifiers != ModifierKeys.Shift)
             {
                 var userInput = this.UserInputTextBox.Text.Trim();
-                bool sent = viewModel.SendMessage(userInput).GetAwaiter().GetResult();
+                bool sent = _viewModel.SendMessage(userInput).GetAwaiter().GetResult();
 
                 if (!sent)
                 {
@@ -102,11 +102,7 @@ namespace ChatGPTForPersonalEducation_WPF
 
       
 
-        // Handler for selecting an existing conversation
-        private void ConversationsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            // Load selected conversation messages
-        }
+   
 
         // Optional: Handler for application closing event
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -119,9 +115,25 @@ namespace ChatGPTForPersonalEducation_WPF
             this.Close();
         }
 
-        private void ExistingConversation_MouseDown(object sender, MouseButtonEventArgs e)
+        private async void ExistingConversation_MouseDown(object sender, MouseButtonEventArgs e)
         {
 
+            if (sender is TextBlock textBlock)
+            {
+                var conversationItem = textBlock.DataContext as Conversation;
+                if (conversationItem != null)
+                {
+                    await _viewModel.SelectConversationAsync(conversationItem);
+                }
+            }
+        }
+
+        private void NewConversation_Click(object sender, RoutedEventArgs e)
+        {
+
+            this._viewModel.SelectedConversation = new Conversation();
+            this._viewModel.StartNewConversation();
         }
     }
+
 }

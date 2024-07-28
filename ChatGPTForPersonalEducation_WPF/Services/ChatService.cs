@@ -76,12 +76,22 @@ namespace ChatGPTForPersonalEducation_WPF.Services
 
         public async Task<List<Conversation>> GetAllSessionsAsync()
         {
-            var response = await _httpClient.GetAsync("https://localhost:7171/api/retrieve_all_sessions");
+            var response = await _httpClient.GetAsync("https://localhost:7171/api/retrieve_sessions/retrieve_all_sessions");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            List<OpenAiApiBody>? boddies = JsonConvert.DeserializeObject<List<OpenAiApiBody>>(content);
-            List<Conversation> conversations = boddies.Select(x=> x.Conversation).ToList();
+            List<OpenAiApiBody>? bodies = JsonConvert.DeserializeObject<List<OpenAiApiBody>>(content);
+            List<Conversation> conversations = bodies.Select(x => x.Conversation).ToList();
             return conversations;
+        }
+
+        public async Task<Conversation> GetConversationByIdAsync(Guid id)
+        {
+            var response = await _httpClient.GetAsync($"https://localhost:7171/api/retrieve_sessions/{id}");
+            response.EnsureSuccessStatusCode();
+            var content = await response.Content.ReadAsStringAsync();
+            var conversation = JsonConvert.DeserializeObject<Conversation>(content);
+            return conversation;
         }
     }
 }
+

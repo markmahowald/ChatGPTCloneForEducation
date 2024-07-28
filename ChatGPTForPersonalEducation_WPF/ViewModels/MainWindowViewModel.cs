@@ -98,5 +98,40 @@ namespace ChatGPTForPersonalEducation_WPF.ViewModels
                 return true;
             }
         }
+
+        public async Task SelectConversationAsync(Conversation conversationItem)
+        {
+            if (conversationItem is not null)
+            {
+                await RefreshConversationAsync(conversationItem.Id);
+            }
+        }
+
+        public void StartNewConversation()
+        {
+            SelectedConversation = new Conversation();
+            SelectedConversationMessages.Clear();
+        }
+
+        public async Task RefreshConversationAsync(Guid conversationId)
+        {
+            try
+            {
+                var updatedConversation = await this.ChatService.GetConversationByIdAsync(conversationId);
+                if (updatedConversation != null)
+                {
+                    SelectedConversationMessages.Clear();
+                    foreach (var message in updatedConversation.Messages)
+                    {
+                        SelectedConversationMessages.Add(message);
+                    }
+                    SelectedConversation = updatedConversation;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to refresh conversation: {ex.Message}");
+            }
+        }
     }
 }
