@@ -1,12 +1,10 @@
-﻿using ChatGPTInteractionAPI.Classes;
-using ChatGPTInteractionAPI.Services;
+﻿using ChatGPTInteractionAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using ChatGPTInteractionAPI.Classes.ControllerSupportingClasses;
 
 namespace ChatGPTInteractionAPI.Controllers
 {
-    [Route("api/retrieve_all_sessions")]
+    [Route("api/retrieve_sessions")]
     [ApiController]
     public class GetAllConversationsController : Controller
     {
@@ -17,11 +15,22 @@ namespace ChatGPTInteractionAPI.Controllers
             _chatService = chatService;
         }
 
-        [HttpGet]
+        [HttpGet("retrieve_all_sessions")]
         public async Task<IActionResult> GetAllConversations()
         {
-            var conversations = await _chatService.GetAllConversationsAsync();
+            List<SharedClassesAndUtility.OpenAiApiBody> conversations = await _chatService.GetAllConversationsAsync();
             return Ok(conversations);
+        }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetConversationById(Guid id)
+        {
+            var conversation = await _chatService.GetConversationByIdAsync(id);
+            if (conversation == null)
+            {
+                return NotFound();
+            }
+            return Ok(conversation);
         }
     }
 }
+

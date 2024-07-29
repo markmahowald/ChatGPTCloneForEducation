@@ -1,8 +1,8 @@
-﻿using ChatGPTInteractionAPI.Classes;
-using ChatGPTInteractionAPI.Services;
+﻿using ChatGPTInteractionAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using ChatGPTInteractionAPI.Classes.ControllerSupportingClasses;
+using SharedClassesAndUtility;
+using Newtonsoft.Json.Linq;
 
 namespace ChatGPTInteractionAPI.Controllers
 {
@@ -28,10 +28,10 @@ namespace ChatGPTInteractionAPI.Controllers
                 }
 
                 // Assuming StartConversation method returns a Conversation object
-                Conversation conversation = await _chatService.StartConversation(request.InitialMessage);
 
-                // You might want to return the full conversation object, or just an identifier
-                // Here, I'm assuming you return an identifier, adjust as necessary
+                Conversation conversation = await _chatService.StartConversation(request.InitialMessage);
+  
+
                 if (conversation.Messages.Last().Role == "user")
                 {
                     return StatusCode(500, "An error occurred while processing your request." + "OpenAi has not replied");
