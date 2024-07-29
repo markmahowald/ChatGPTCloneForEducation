@@ -2,6 +2,16 @@
 
 This project aims to replicate the functionality of OpenAI's ChatGPT using a Blazor front end and an ASP.NET Core backend. The application will allow users to interact with a conversational AI model through a clean and intuitive interface.
 
+## Project Status
+
+We're mid-development, but the API layer is now fully operational and ready for community testing! It includes three endpoints:
+- **Start Conversation**: Initiates a new chat session.
+- **Continue Conversation**: Allows continued interaction within an existing session.
+- **Get All Conversations**: Retrieves a list of all ongoing and past conversations.
+
+Feel free to test these functionalities and provide feedback!  I will be adding more comments and cleaning up commented code at a later date.  
+
+
 ## Requirements
 
 - **Tier 0 (MVP)**: Basic chat functionality using OpenAI's API to start and maintain conversations.
@@ -60,53 +70,10 @@ A step-by-step guide on setting up your development environment:
 ```
     bash
 
-git clone https://github.com/yourusername/chatgpt-clone.git
+git clone https://github.com/markmahowald/ChatGPTCloneForEducation.git
 ```
 
-1. Navigate to the project directory:
-```
-bash
 
-cd chatgpt-clone
-```
-
-1. Install necessary packages:
-```
-bash
-
-cd ChatGPTCloneFrontEnd
-npm install
-cd ../ChatGPTCloneAPI
-dotnet restore
-```
-1. Start the backend server:
-
-```
-bash
-
-dotnet run
-```
-
-1. Run the front end:
-```
-bash
-
-    npm start
-```
-This will launch the front end on localhost:3000 and connect it to the backend automatically.
-
-### Usage
-
-After following the installation steps, you can interact with the ChatGPT clone by opening your web browser and navigating to http://localhost:3000. Type a message into the chat interface and receive a response from the OpenAI model.
-Contributing
-
-Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
-
-### Fork the Project
-1. Create your Feature Branch (git checkout -b feature/AmazingFeature)
-1. Commit your Changes (git commit -m 'Add some AmazingFeature')
-1. Push to the Branch (git push origin feature/AmazingFeature)
-1. Open a Pull Request
 
 ### License
 
@@ -121,3 +88,5 @@ Mark Mahowald- markmahowald0328@gmail.com
 [OpenAI](https://openai.com/)
 [ASP.NET Core](https://dotnet.microsoft.com/en-us/apps/aspnet)
 [Blazor](https://dotnet.microsoft.com/en-us/apps/aspnet/web-apps/blazor)
+Special thanks to the OpenAI Assistant(through chat GPT and the open ai API directly), which provided valuable input during the design and troubleshooting phases of the API layer.
+
