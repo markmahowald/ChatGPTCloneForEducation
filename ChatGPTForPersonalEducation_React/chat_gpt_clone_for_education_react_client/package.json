@@ -1,0 +1,20 @@
+{
+    "name": "chat_gpt_for_education_react",
+    "version": "1.0.0",
+    "scripts": {
+        "start": "node server/index.js",
+        "client-install": "npm install --prefix client",
+        "client-build": "npm run build --prefix client",
+        "install": "npm install && npm run client-install",
+
+    },
+    "dependencies": {
+        "chat_gpt_for_education_react": "file:",
+        "chatgptForEducation": "file:",
+        "express": "^4.17.1",
+        "my-app": "file:"
+    },
+    "engines": {
+        "node": "14.x"
+    }
+}
