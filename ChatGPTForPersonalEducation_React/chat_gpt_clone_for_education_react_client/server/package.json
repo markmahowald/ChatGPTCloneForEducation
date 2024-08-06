@@ -1,0 +1,15 @@
+{
+    "name": "server",
+    "version": "1.0.0",
+    "main": "index.js",
+    "dependencies": {
+        "express": "^4.17.1",
+        "server": "file:"
+    },
+    "scripts": {
+        "start": "node index.js"
+    },
+    "engines": {
+        "node": "14.x"
+    }
+}
